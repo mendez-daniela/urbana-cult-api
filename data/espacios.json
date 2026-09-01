@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "nombre": "Centro Cultural Abasto",
+    "direccion": "Av. Corrientes 3200, Abasto",
+    "barrio": "Abasto",
+    "comuna": 3,
+    "capacidad": 150,
+    "descripcion": "Espacio dedicado a teatro independiente y talleres culturales.",
+    "telefono": "11-2345-6789"
+  },
+  {
+    "id": 2,
+    "nombre": "Sala de Ensayo Almagro",
+    "direccion": "Av. Rivadavia 4500, Almagro",
+    "barrio": "Almagro",
+    "comuna": 5,
+    "capacidad": 60,
+    "descripcion": "Sala de ensayo para bandas y compañías de teatro.",
+    "telefono": "11-3456-7890"
+  },
+  {
+    "id": 3,
+    "nombre": "Teatro Boedo",
+    "direccion": "Av. La Plata 1200, Boedo",
+    "barrio": "Boedo",
+    "comuna": 5,
+    "capacidad": 200,
+    "descripcion": "Teatro autogestionado con programación de música y teatro.",
+    "telefono": "11-4567-8901"
+  }
+]

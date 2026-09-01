@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    title Urbana Cult - Espacios
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+      }
+      h1 {
+        color: #2c3e50;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .barrio {
+        color: #7f8c8d;
+        font-size: 0.9em;
+      }
+      .info {
+        color: #34495e;
+        font-size: 0.95em;
+      }
+  body
+    h1 🎭 Urbana Cult - Espacios Culturales
+    if espacios.length > 0
+      ul
+        each espacio in espacios
+          li
+            strong #{espacio.nombre}
+            p.info 📍 #{espacio.direccion}
+            p.barrio 🏘️ #{espacio.barrio} (Comuna #{espacio.comuna})
+            p.info 📞 #{espacio.telefono} | Capacidad: #{espacio.capacidad} personas
+    else
+      p No hay espacios disponibles.
