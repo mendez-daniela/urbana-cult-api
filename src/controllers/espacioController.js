@@ -1,8 +1,9 @@
 const EspacioModel = require('../models/EspacioModel');
 
-// Instanciamos el modelo (creamos un objeto a partir de la clase)
+// Instanciamos el modelo
 const espacioModel = new EspacioModel();
 
+// Obtener todos los espacios
 const obtenerEspacios = (req, res) => {
   try {
     const espacios = espacioModel.obtenerTodos();
@@ -12,6 +13,7 @@ const obtenerEspacios = (req, res) => {
   }
 };
 
+// Obtener un espacio por ID
 const obtenerEspacioPorId = (req, res) => {
   try {
     const espacio = espacioModel.obtenerPorId(parseInt(req.params.id));
@@ -24,15 +26,23 @@ const obtenerEspacioPorId = (req, res) => {
   }
 };
 
+// Crear un nuevo espacio
 const crearEspacio = (req, res) => {
   try {
     const nuevoEspacio = espacioModel.crear(req.body);
     res.status(201).json(nuevoEspacio);
   } catch (error) {
+    // Si el error es de validación, responder con 400 Bad Request
+    if (error.message.includes('Faltan campos obligatorios') || 
+        error.message.includes('comuna') || 
+        error.message.includes('capacidad')) {
+      return res.status(400).json({ mensaje: error.message });
+    }
     res.status(500).json({ mensaje: 'Error al guardar los datos' });
   }
 };
 
+// Actualizar un espacio existente
 const actualizarEspacio = (req, res) => {
   try {
     const espacioActualizado = espacioModel.actualizar(parseInt(req.params.id), req.body);
@@ -45,6 +55,7 @@ const actualizarEspacio = (req, res) => {
   }
 };
 
+// Eliminar un espacio
 const eliminarEspacio = (req, res) => {
   try {
     const eliminado = espacioModel.eliminar(parseInt(req.params.id));

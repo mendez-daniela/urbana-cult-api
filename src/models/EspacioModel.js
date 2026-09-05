@@ -3,7 +3,6 @@ const path = require('path');
 
 class EspacioModel {
   constructor() {
-    // Definimos la ruta al archivo JSON (subimos un nivel desde src/models)
     this.filePath = path.join(__dirname, '../../data/espacios.json');
   }
 
@@ -29,22 +28,51 @@ class EspacioModel {
     return espacios.find(e => e.id === id) || null;
   }
 
-  // Crear un nuevo espacio
+  // Crear un nuevo espacio (con validaciones)
   crear(nuevoEspacio) {
+    const { nombre, direccion, barrio, comuna, capacidad, descripcion, telefono } = nuevoEspacio;
+
+    // Validaciones
+    if (!nombre || !direccion || !barrio || !comuna || !capacidad) {
+      throw new Error('Faltan campos obligatorios: nombre, direccion, barrio, comuna y capacidad son requeridos');
+    }
+
+    if (isNaN(comuna) || comuna < 1 || comuna > 15) {
+      throw new Error('La comuna debe ser un número entre 1 y 15');
+    }
+
+    if (isNaN(capacidad) || capacidad < 1) {
+      throw new Error('La capacidad debe ser un número mayor a 0');
+    }
+
+    // Si pasa las validaciones, crear el espacio
     const espacios = this._leerArchivo();
     const nuevoId = espacios.length > 0 ? Math.max(...espacios.map(e => e.id)) + 1 : 1;
-    const espacioConId = { id: nuevoId, ...nuevoEspacio };
+    const espacioConId = {
+      id: nuevoId,
+      nombre,
+      direccion,
+      barrio,
+      comuna: parseInt(comuna),
+      capacidad: parseInt(capacidad),
+      descripcion: descripcion || '',
+      telefono: telefono || ''
+    };
     espacios.push(espacioConId);
     this._guardarArchivo(espacios);
     return espacioConId;
   }
 
-  // Actualizar un espacio existente
+  // Actualizar un espacio existente (sin permitir cambiar el ID)
   actualizar(id, datosActualizados) {
     const espacios = this._leerArchivo();
     const index = espacios.findIndex(e => e.id === id);
     if (index === -1) return null;
-    espacios[index] = { ...espacios[index], ...datosActualizados };
+
+    // Eliminar el campo 'id' del body si viene, para evitar sobrescribirlo
+    const { id: _, ...datosLimpios } = datosActualizados;
+
+    espacios[index] = { ...espacios[index], ...datosLimpios };
     this._guardarArchivo(espacios);
     return espacios[index];
   }
@@ -59,5 +87,4 @@ class EspacioModel {
   }
 }
 
-// Exportamos la clase para usarla en otros archivos
 module.exports = EspacioModel;

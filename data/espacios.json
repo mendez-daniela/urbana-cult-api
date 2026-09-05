@@ -1,13 +1,13 @@
 [
   {
     "id": 1,
-    "nombre": "Centro Cultural Abasto",
-    "direccion": "Av. Corrientes 3200, Abasto",
+    "nombre": "Espacio con ID forzado",
+    "direccion": "Av. Corrientes 4000",
     "barrio": "Abasto",
     "comuna": 3,
-    "capacidad": 150,
-    "descripcion": "Espacio dedicado a teatro independiente y talleres culturales.",
-    "telefono": "11-2345-6789"
+    "capacidad": 200,
+    "descripcion": "Espacio creado para prueba final",
+    "telefono": "11-7777-8888"
   },
   {
     "id": 2,
@@ -28,5 +28,15 @@
     "capacidad": 200,
     "descripcion": "Teatro autogestionado con programación de música y teatro.",
     "telefono": "11-4567-8901"
+  },
+  {
+    "id": 4,
+    "nombre": "Espacio de Prueba Final",
+    "direccion": "Av. Corrientes 4000",
+    "barrio": "Abasto",
+    "comuna": 3,
+    "capacidad": 120,
+    "descripcion": "Espacio creado para prueba final",
+    "telefono": "11-7777-8888"
   }
 ]
