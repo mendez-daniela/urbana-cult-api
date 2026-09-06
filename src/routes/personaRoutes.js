@@ -1,18 +1,18 @@
 const express = require('express');
 const {
-  obtenerPersonas,
-  obtenerPersonaPorId,
-  crearPersona,
-  actualizarPersona,
-  eliminarPersona
+  obtenerEspacios,
+  obtenerEspacioPorId,
+  crearEspacio,
+  actualizarEspacio,
+  eliminarEspacio
 } = require('../controllers/espacioController.js');
 
 const router = express.Router();
 
-router.get('/', obtenerPersonas);
-router.get('/:id', obtenerPersonaPorId);
-router.post('/', crearPersona);
-router.put('/:id', actualizarPersona);
-router.delete('/:id', eliminarPersona);
+router.get('/', obtenerEspacios);
+router.get('/:id', obtenerEspacioPorId);
+router.post('/', crearEspacio);
+router.put('/:id', actualizarEspacio);
+router.delete('/:id', eliminarEspacio);
 
 module.exports = router;

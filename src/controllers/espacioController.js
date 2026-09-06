@@ -1,9 +1,9 @@
 const EspacioModel = require('../models/EspacioModel');
 
-// Instanciamos el modelo
+// Instanciamos y validamos
 const espacioModel = new EspacioModel();
 
-// Obtener todos los espacios
+// Obtener todos
 const obtenerEspacios = (req, res) => {
   try {
     const espacios = espacioModel.obtenerTodos();
@@ -13,7 +13,7 @@ const obtenerEspacios = (req, res) => {
   }
 };
 
-// Obtener un espacio por ID
+// Obtener por ID
 const obtenerEspacioPorId = (req, res) => {
   try {
     const espacio = espacioModel.obtenerPorId(parseInt(req.params.id));
@@ -26,23 +26,29 @@ const obtenerEspacioPorId = (req, res) => {
   }
 };
 
-// Crear un nuevo espacio
+// Crear
 const crearEspacio = (req, res) => {
   try {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ 
+        mensaje: 'El cuerpo de la solicitud no puede estar vacío' 
+      });
+    }
     const nuevoEspacio = espacioModel.crear(req.body);
     res.status(201).json(nuevoEspacio);
   } catch (error) {
-    // Si el error es de validación, responder con 400 Bad Request
     if (error.message.includes('Faltan campos obligatorios') || 
         error.message.includes('comuna') || 
-        error.message.includes('capacidad')) {
+        error.message.includes('capacidad') || 
+        error.message.includes('dirección') ||
+        error.message.includes('direccion')) {
       return res.status(400).json({ mensaje: error.message });
     }
     res.status(500).json({ mensaje: 'Error al guardar los datos' });
   }
 };
 
-// Actualizar un espacio existente
+// Actualizar
 const actualizarEspacio = (req, res) => {
   try {
     const espacioActualizado = espacioModel.actualizar(parseInt(req.params.id), req.body);
@@ -51,11 +57,17 @@ const actualizarEspacio = (req, res) => {
     }
     res.json(espacioActualizado);
   } catch (error) {
+    if (error.message.includes('comuna') || 
+        error.message.includes('capacidad') || 
+        error.message.includes('dirección') ||
+        error.message.includes('direccion')) {
+      return res.status(400).json({ mensaje: error.message });
+    }
     res.status(500).json({ mensaje: 'Error al actualizar los datos' });
   }
 };
 
-// Eliminar un espacio
+// Eliminar
 const eliminarEspacio = (req, res) => {
   try {
     const eliminado = espacioModel.eliminar(parseInt(req.params.id));

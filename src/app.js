@@ -1,6 +1,5 @@
 const express = require('express');
-const espacioRoutes = require('./routes/espacioRoutes.js');
-const logger = require('./middlewares/logger.js');
+const spazioRoutes = require('./routes/espacioRoutes.js');
 const path = require('path');
 const fs = require('fs');
 
@@ -12,8 +11,9 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
-app.use(logger);
-app.use('/api/espacios', espacioRoutes);
+
+// Usar las rutas de la API
+app.use('/api/espacios', spazioRoutes);
 
 // Ruta para mostrar los espacios en el navegador
 app.get('/espacios', (req, res) => {
@@ -24,14 +24,10 @@ app.get('/espacios', (req, res) => {
     res.render('espacios', { espacios });
   } catch (error) {
     console.error('Error al leer el archivo:', error);
-    res.status(500).send('Error al cargar los espacios');
+    res.status(500).send('Error al cargar los espacios: ' + error.message);
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('¡API de Urbana Cult funcionando!');
-});
-
 app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+  console.log(`Servidor corriendo en http://localhost:4000`);
 });
