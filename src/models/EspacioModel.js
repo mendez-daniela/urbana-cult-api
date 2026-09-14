@@ -32,12 +32,13 @@ class EspacioModel {
   crear(nuevoEspacio) {
     const { nombre, direccion, barrio, comuna, capacidad, descripcion, telefono } = nuevoEspacio;
 
-    if (!nombre || !direccion || !barrio || !comuna || !capacidad) {
+    if (!nombre || !nombre.trim() || !direccion || !barrio || !comuna || !capacidad) {
       throw new Error('Faltan campos obligatorios: nombre, direccion, barrio, comuna y capacidad son requeridos');
     }
 
-    if (isNaN(comuna) || comuna < 1 || comuna > 15) {
-      throw new Error('La comuna debe ser un número entre 1 y 15');
+    const comunaNum = parseInt(comuna);
+    if (isNaN(comunaNum) || (comunaNum !== 3 && comunaNum !== 5)) {
+      throw new Error('La comuna debe ser 3 (Balvanera/San Cristóbal) o 5 (Almagro/Boedo)');
     }
 
     if (isNaN(capacidad) || capacidad < 1) {
@@ -48,14 +49,22 @@ class EspacioModel {
       throw new Error('La dirección debe incluir un número');
     }
 
+    if (telefono && !/^[0-9+\-\s]+$/.test(telefono)) {
+      throw new Error('El teléfono solo puede contener números, guiones, espacios y el signo +');
+    }
+
     const espacios = this._leerArchivo();
+    if (espacios.some(e => e.nombre.toLowerCase() === nombre.toLowerCase())) {
+      throw new Error('Ya existe un espacio con ese nombre');
+    }
+
     const nuevoId = espacios.length > 0 ? Math.max(...espacios.map(e => e.id)) + 1 : 1;
     const espacioConId = {
       id: nuevoId,
       nombre,
       direccion,
       barrio,
-      comuna: parseInt(comuna),
+      comuna: comunaNum,
       capacidad: parseInt(capacidad),
       descripcion: descripcion || '',
       telefono: telefono || ''
@@ -73,12 +82,25 @@ class EspacioModel {
 
     const { id: _, ...datosLimpios } = datosActualizados;
 
-    if (datosLimpios.comuna !== undefined) {
-      const comuna = datosLimpios.comuna;
-      if (isNaN(comuna) || comuna < 1 || comuna > 15) {
-        throw new Error('La comuna debe ser un número entre 1 y 15');
+    if (datosLimpios.nombre !== undefined && !datosLimpios.nombre.trim()) {
+      throw new Error('El nombre no puede estar vacío');
+    }
+
+    if (datosLimpios.nombre !== undefined) {
+      const nombreDuplicado = espacios.some(e =>
+        e.id !== id && e.nombre.toLowerCase() === datosLimpios.nombre.toLowerCase()
+      );
+      if (nombreDuplicado) {
+        throw new Error('Ya existe un espacio con ese nombre');
       }
-      datosLimpios.comuna = parseInt(comuna);
+    }
+
+    if (datosLimpios.comuna !== undefined) {
+      const comunaNum = parseInt(datosLimpios.comuna);
+      if (isNaN(comunaNum) || (comunaNum !== 3 && comunaNum !== 5)) {
+        throw new Error('La comuna debe ser 3 (Balvanera/San Cristóbal) o 5 (Almagro/Boedo)');
+      }
+      datosLimpios.comuna = comunaNum;
     }
 
     if (datosLimpios.capacidad !== undefined) {
@@ -94,6 +116,10 @@ class EspacioModel {
       if (!/\d/.test(direccion)) {
         throw new Error('La dirección debe incluir un número');
       }
+    }
+
+    if (datosLimpios.telefono !== undefined && datosLimpios.telefono && !/^[0-9+\-\s]+$/.test(datosLimpios.telefono)) {
+      throw new Error('El teléfono solo puede contener números, guiones, espacios y el signo +');
     }
 
     espacios[index] = { ...espacios[index], ...datosLimpios };

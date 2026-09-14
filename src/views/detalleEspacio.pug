@@ -1,0 +1,57 @@
+doctype html
+html
+  head
+    title Detalle del Espacio - Urbana Cult
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+      }
+      h1 {
+        color: #1a1a1a;
+      }
+      .menu {
+        margin-bottom: 20px;
+      }
+      .menu a {
+        display: inline-block;
+        margin-right: 15px;
+        padding: 8px 15px;
+        background-color: #1a1a1a;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .menu a:hover {
+        background-color: #333;
+      }
+      .card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        max-width: 500px;
+      }
+      .card p {
+        margin: 10px 0;
+        color: #34495e;
+      }
+      .card strong {
+        color: #1a1a1a;
+      }
+  body
+    h1
+      img(src="/logo-icono.png" alt="Urbana Cult" style="height: 50px; vertical-align: middle; margin-right: 10px;")
+      | Detalle del Espacio
+    .menu
+      a(href="/espacios") ← Volver a la lista
+    .card
+      p: strong ID: #{espacio.id}
+      p: strong Nombre: #{espacio.nombre}
+      p: strong Dirección: #{espacio.direccion}
+      p: strong Barrio: #{espacio.barrio}
+      p: strong Comuna: #{espacio.comuna}
+      p: strong Capacidad: #{espacio.capacidad} personas
+      p: strong Descripción: #{espacio.descripcion}
+      p: strong Teléfono: #{espacio.telefono}

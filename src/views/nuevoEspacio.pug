@@ -1,0 +1,94 @@
+doctype html
+html
+  head
+    title Nuevo Espacio - Urbana Cult
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+      }
+      h1 {
+        color: #1a1a1a;
+      }
+      .menu {
+        margin-bottom: 20px;
+      }
+      .menu a {
+        display: inline-block;
+        margin-right: 15px;
+        padding: 8px 15px;
+        background-color: #1a1a1a;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .menu a:hover {
+        background-color: #333;
+      }
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        max-width: 500px;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #1a1a1a;
+      }
+      input, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+      }
+      button:hover {
+        background-color: #c0392b;
+      }
+  body
+    h1
+      img(src="/logo-icono.png" alt="Urbana Cult" style="height: 50px; vertical-align: middle; margin-right: 10px;")
+      | Nuevo Espacio
+    .menu
+      a(href="/espacios") ← Volver a la lista
+    form(action="/espacios/crear" method="POST")
+      label(for="nombre") Nombre:
+      input(type="text" name="nombre" maxlength="100" placeholder="Ej: Centro Cultural Abasto" required)
+      
+      label(for="direccion") Dirección:
+      input(type="text" name="direccion" maxlength="150" placeholder="Ej: Av. Corrientes 3200" required)
+      
+      label(for="barrio") Barrio:
+      input(type="text" name="barrio" maxlength="50" placeholder="Ej: Balvanera" required)
+      
+      label(for="comuna") Comuna:
+      select(name="comuna" required)
+        option(value="") Seleccioná una comuna
+        option(value="3") 3 - Balvanera / San Cristóbal
+        option(value="5") 5 - Almagro / Boedo
+      
+      label(for="capacidad") Capacidad:
+      input(type="number" name="capacidad" min="1" max="10000" required)
+      
+      label(for="descripcion") Descripción:
+      input(type="text" name="descripcion" maxlength="300" placeholder="Breve descripción del espacio")
+      
+      label(for="telefono") Teléfono:
+      input(type="tel" name="telefono" maxlength="20" pattern="[0-9+\\-\\s]+" title="Solo números, guiones y el signo +" placeholder="Ej: 11-2345-6789")
+      
+      button(type="submit") Guardar Espacio

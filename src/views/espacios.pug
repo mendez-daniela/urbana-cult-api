@@ -9,36 +9,78 @@ html
         background-color: #f4f4f4;
       }
       h1 {
-        color: #2c3e50;
+        color: #1a1a1a;
       }
-      ul {
-        list-style: none;
-        padding: 0;
+      .menu {
+        margin-bottom: 20px;
       }
-      li {
-        background-color: #fff;
-        padding: 10px;
-        margin-bottom: 10px;
+      .menu a {
+        display: inline-block;
+        margin-right: 15px;
+        padding: 8px 15px;
+        background-color: #e74c3c;
+        color: #fff;
+        text-decoration: none;
         border-radius: 5px;
+      }
+      .menu a:hover {
+        background-color: #c0392b;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       }
-      .barrio {
-        color: #7f8c8d;
-        font-size: 0.9em;
+      th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
       }
-      .info {
-        color: #34495e;
-        font-size: 0.95em;
+      th {
+        background-color: #e74c3c;
+        color: #fff;
       }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .acciones a {
+        margin-right: 10px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .ver { color: #e74c3c; }
+      .editar { color: #f39c12; }
+      .eliminar { color: #c0392b; }
   body
-    h1 🎭 Urbana Cult - Espacios Culturales
+    h1
+      img(src="/logo-icono.png" alt="Urbana Cult" style="height: 50px; vertical-align: middle; margin-right: 10px;")
+      | Espacios Culturales
+    .menu
+      a(href="/espacios/nuevo") + Nuevo Espacio
     if espacios.length > 0
-      ul
-        each espacio in espacios
-          li
-            strong #{espacio.nombre}
-            p.info 📍 #{espacio.direccion}
-            p.barrio 🏘️ #{espacio.barrio} (Comuna #{espacio.comuna})
-            p.info 📞 #{espacio.telefono} | Capacidad: #{espacio.capacidad} personas
+      table
+        thead
+          tr
+            th ID
+            th Nombre
+            th Dirección
+            th Barrio
+            th Comuna
+            th Capacidad
+            th Acciones
+        tbody
+          each espacio in espacios
+            tr
+              td= espacio.id
+              td= espacio.nombre
+              td= espacio.direccion
+              td= espacio.barrio
+              td= espacio.comuna
+              td= espacio.capacidad
+              td.acciones
+                a.ver(href=`/espacios/detalle/${espacio.id}`) Ver
+                a.editar(href=`/espacios/editar/${espacio.id}`) Editar
+                a.eliminar(href=`/espacios/eliminar/${espacio.id}` onclick="return confirm('¿Estás seguro de eliminar este espacio?')") Eliminar
     else
       p No hay espacios disponibles.
