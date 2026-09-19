@@ -41,8 +41,10 @@ class EspacioModel {
       throw new Error('La comuna debe ser 3 (Balvanera/San Cristóbal) o 5 (Almagro/Boedo)');
     }
 
-    if (isNaN(capacidad) || capacidad < 1) {
-      throw new Error('La capacidad debe ser un número mayor a 0');
+    // ✅ VALIDACIÓN CORREGIDA: capacidad entre 1 y 1000
+    const capacidadNum = Number(capacidad);
+    if (isNaN(capacidadNum) || capacidadNum < 1 || capacidadNum > 1000) {
+      throw new Error('La capacidad debe ser un número entre 1 y 1000');
     }
 
     if (!/\d/.test(direccion)) {
@@ -65,7 +67,7 @@ class EspacioModel {
       direccion,
       barrio,
       comuna: comunaNum,
-      capacidad: parseInt(capacidad),
+      capacidad: capacidadNum,  // ✅ Ya convertido a número
       descripcion: descripcion || '',
       telefono: telefono || ''
     };
@@ -103,12 +105,13 @@ class EspacioModel {
       datosLimpios.comuna = comunaNum;
     }
 
+    // ✅ VALIDACIÓN CORREGIDA: capacidad entre 1 y 1000
     if (datosLimpios.capacidad !== undefined) {
-      const capacidad = datosLimpios.capacidad;
-      if (isNaN(capacidad) || capacidad < 1) {
-        throw new Error('La capacidad debe ser un número mayor a 0');
+      const capacidadNum = Number(datosLimpios.capacidad);
+      if (isNaN(capacidadNum) || capacidadNum < 1 || capacidadNum > 1000) {
+        throw new Error('La capacidad debe ser un número entre 1 y 1000');
       }
-      datosLimpios.capacidad = parseInt(capacidad);
+      datosLimpios.capacidad = capacidadNum;
     }
 
     if (datosLimpios.direccion !== undefined) {
