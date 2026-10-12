@@ -66,7 +66,7 @@ html
       | Editar Espacio
     .menu
       a(href="/espacios") ← Volver a la lista
-    form(action=`/espacios/actualizar/${espacio.id}` method="POST")
+    form(action=`/espacios/actualizar/${espacio._id}` method="POST")
       label(for="nombre") Nombre:
       input(type="text" name="nombre" maxlength="100" placeholder="Ej: Centro Cultural Abasto" value=espacio.nombre required)
       

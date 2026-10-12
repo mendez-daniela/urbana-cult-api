@@ -36,7 +36,9 @@ const espacioSchema = new mongoose.Schema({
       validator: function (v) {
         const comuna = this.comuna;
         if (!comuna || !BARRIOS_POR_COMUNA[comuna]) return true;
-        return BARRIOS_POR_COMUNA[comuna].includes(v);
+        return BARRIOS_POR_COMUNA[comuna]
+         .map(b => b.toLowerCase())
+         .includes(v.trim().toLowerCase());
       },
       message: function (props) {
         const comuna = this.comuna;
