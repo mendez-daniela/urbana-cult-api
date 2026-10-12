@@ -56,8 +56,11 @@ html
     h1
       img(src="/logo-icono.png" alt="Urbana Cult" style="height: 50px; vertical-align: middle; margin-right: 10px;")
       | Espacios Culturales
+      if usuario
+  p(style="color: #666; font-size: 14px; margin-bottom: 15px;") Sesión iniciada como: #{usuario}
     .menu
       a(href="/espacios/nuevo") + Nuevo Espacio
+      a(href="/logout" style="background-color: #555;") Cerrar Sesión
     if espacios.length > 0
       table
         thead

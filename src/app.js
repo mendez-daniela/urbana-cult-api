@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
 const conectarDB = require('./config/db');
 const espacioRoutes = require('./routes/espacioRoutes.js');
 const webRoutes = require('./routes/webRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
 const logger = require('./middlewares/logger.js');
 
 const app = express();
@@ -24,13 +26,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 
+// Configurar sesión
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'urbana-cult-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000 // 24 horas
+  }
+}));
+
+// Pasar datos del usuario a las vistas (para navbar, etc.)
+app.use((req, res, next) => {
+  res.locals.usuario = req.session.usuarioEmail || null;
+  next();
+});
+
 // Rutas
+app.use('/', authRoutes);
 app.use('/api/espacios', espacioRoutes);
 app.use('/', webRoutes);
 
 // Ruta raíz
 app.get('/', (req, res) => {
-  res.send('¡API de Urbana Cult funcionando!');
+  res.redirect('/espacios');
 });
 
 app.listen(port, () => {
