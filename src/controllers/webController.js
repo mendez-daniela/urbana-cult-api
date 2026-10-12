@@ -1,4 +1,11 @@
 const Espacio = require('../models/Espacio.js');
+const BARRIOS_POR_COMUNA = require('../config/barrios.js');
+
+// Función auxiliar para armar el mensaje de error de barrio
+const armarMensajeBarrio = (comuna, barrio) => {
+  const barriosValidos = BARRIOS_POR_COMUNA[comuna]?.join(', ') || 'desconocidos';
+  return `El barrio "${barrio}" no corresponde a la Comuna ${comuna}. Los barrios válidos son: ${barriosValidos}`;
+};
 
 // 1. Listar todos los espacios
 const listarEspacios = async (req, res) => {
@@ -24,7 +31,18 @@ const crearEspacio = async (req, res) => {
     res.redirect('/espacios');
   } catch (error) {
     console.error('Error al crear el espacio:', error);
-    res.status(400).send('Error al crear el espacio: ' + error.message);
+
+    let mensaje = 'Error al crear el espacio';
+
+    if (error.name === 'ValidationError') {
+      if (error.errors.barrio) {
+        mensaje = armarMensajeBarrio(req.body.comuna, req.body.barrio);
+      } else {
+        mensaje = Object.values(error.errors).map(e => e.message).join('. ');
+      }
+    }
+
+    res.status(400).send(mensaje);
   }
 };
 
@@ -54,7 +72,18 @@ const actualizarEspacio = async (req, res) => {
     res.redirect('/espacios');
   } catch (error) {
     console.error('Error al actualizar el espacio:', error);
-    res.status(400).send('Error al actualizar el espacio: ' + error.message);
+
+    let mensaje = 'Error al actualizar el espacio';
+
+    if (error.name === 'ValidationError') {
+      if (error.errors.barrio) {
+        mensaje = armarMensajeBarrio(req.body.comuna, req.body.barrio);
+      } else {
+        mensaje = Object.values(error.errors).map(e => e.message).join('. ');
+      }
+    }
+
+    res.status(400).send(mensaje);
   }
 };
 
