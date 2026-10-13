@@ -6,7 +6,7 @@ const obtenerEspacios = async (req, res) => {
     const espacios = await Espacio.find();
     res.status(200).json(espacios);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener espacios', error: error.message });
+    res.status(500).json({ mensaje: 'Error al obtener espacios' });
   }
 };
 
@@ -19,7 +19,7 @@ const obtenerEspacioPorId = async (req, res) => {
     }
     res.status(200).json(espacio);
   } catch (error) {
-    res.status(400).json({ mensaje: 'ID inválido', error: error.message });
+    res.status(400).json({ mensaje: 'ID inválido' });
   }
 };
 
@@ -37,7 +37,7 @@ const crearEspacio = async (req, res) => {
       const mensajes = Object.values(error.errors).map(e => e.message);
       return res.status(400).json({ mensaje: mensajes.join('. ') });
     }
-    res.status(400).json({ mensaje: 'Error al crear el espacio', error: error.message });
+    res.status(400).json({ mensaje: 'Error al crear el espacio' });
   }
 };
 
@@ -65,7 +65,7 @@ const actualizarEspacio = async (req, res) => {
       const mensajes = Object.values(error.errors).map(e => e.message);
       return res.status(400).json({ mensaje: mensajes.join('. ') });
     }
-    res.status(400).json({ mensaje: 'Error al actualizar el espacio', error: error.message });
+    res.status(400).json({ mensaje: 'Error al actualizar el espacio' });
   }
 };
 
@@ -78,7 +78,7 @@ const eliminarEspacio = async (req, res) => {
     }
     res.status(200).json({ mensaje: 'Espacio eliminado correctamente' });
   } catch (error) {
-    res.status(400).json({ mensaje: 'ID inválido', error: error.message });
+    res.status(400).json({ mensaje: 'ID inválido' });
   }
 };
 

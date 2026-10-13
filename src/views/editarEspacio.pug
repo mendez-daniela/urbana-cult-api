@@ -26,6 +26,14 @@ html
       .menu a:hover {
         background-color: #333;
       }
+      .error {
+        background-color: #fdecea;
+        color: #c0392b;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
       form {
         background-color: #fff;
         padding: 20px;
@@ -66,28 +74,30 @@ html
       | Editar Espacio
     .menu
       a(href="/espacios") ← Volver a la lista
-    form(action=`/espacios/actualizar/${espacio.id}` method="POST")
+    if error
+      .error= error
+    form(action=`/espacios/actualizar/${espacio._id}` method="POST")
       label(for="nombre") Nombre:
       input(type="text" name="nombre" maxlength="100" placeholder="Ej: Centro Cultural Abasto" value=espacio.nombre required)
-      
+
       label(for="direccion") Dirección:
       input(type="text" name="direccion" maxlength="150" value=espacio.direccion required)
-      
+
       label(for="barrio") Barrio:
       input(type="text" name="barrio" maxlength="50" value=espacio.barrio required)
-      
+
       label(for="comuna") Comuna:
       select(name="comuna" required)
         option(value="3" selected=(espacio.comuna === 3)) 3 - Balvanera / San Cristóbal
         option(value="5" selected=(espacio.comuna === 5)) 5 - Almagro / Boedo
-      
+
       label(for="capacidad") Capacidad:
       input(type="number" name="capacidad" min="1" max="1000" value=espacio.capacidad required)
-      
+
       label(for="descripcion") Descripción:
       input(type="text" name="descripcion" maxlength="300" value=espacio.descripcion)
-      
+
       label(for="telefono") Teléfono:
       input(type="tel" name="telefono" maxlength="20" pattern="[0-9+\\-\\s]+" title="Solo números, guiones y el signo +" value=espacio.telefono)
-      
+
       button(type="submit") Actualizar Espacio
