@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
-
-const BARRIOS_POR_COMUNA = {
-  3: ['Balvanera', 'San Cristóbal', 'San Cristobal'],
-  5: ['Almagro', 'Boedo']
-};
+const BARRIOS_POR_COMUNA = require('../config/barrios.js');
 
 const espacioSchema = new mongoose.Schema({
   nombre: {
@@ -34,15 +30,25 @@ const espacioSchema = new mongoose.Schema({
     trim: true,
     validate: {
       validator: function (v) {
-        const comuna = this.comuna;
+        // Detectar si es un update (query) o un save (documento)
+        const esQuery = this.getUpdate !== undefined;
+        const comuna = esQuery
+          ? (this.getUpdate()?.comuna || this.getUpdate()?.$set?.comuna)
+          : this.comuna;
+
         if (!comuna || !BARRIOS_POR_COMUNA[comuna]) return true;
-        return BARRIOS_POR_COMUNA[comuna].includes(v);
+
+        const normalizar = (str) => str
+          .trim()
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+
+        return BARRIOS_POR_COMUNA[comuna]
+          .map(normalizar)
+          .includes(normalizar(v));
       },
-      message: function (props) {
-        const comuna = this.comuna;
-        const barriosValidos = BARRIOS_POR_COMUNA[comuna]?.join(', ') || '';
-        return `El barrio "${props.value}" no corresponde a la Comuna ${comuna}. Los barrios válidos son: ${barriosValidos}`;
-      }
+      message: 'El barrio no corresponde a la comuna seleccionada.'
     }
   },
   capacidad: {
