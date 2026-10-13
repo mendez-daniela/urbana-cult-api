@@ -8,6 +8,7 @@ const webRoutes = require('./routes/webRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
 const logger = require('./middlewares/logger.js');
 const autenticado = require('./middlewares/autenticado.js');
+const errorHandler = require('./middlewares/errorHandler.js');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -55,6 +56,9 @@ app.get('/', (req, res) => {
   }
   res.redirect('/login');
 });
+
+// Middleware de manejo de errores (siempre al final)
+app.use(errorHandler); 
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
