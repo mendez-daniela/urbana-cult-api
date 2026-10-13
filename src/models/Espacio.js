@@ -30,7 +30,12 @@ const espacioSchema = new mongoose.Schema({
     trim: true,
     validate: {
       validator: function (v) {
-        const comuna = this.comuna;
+        // Detectar si es un update (query) o un save (documento)
+        const esQuery = this.getUpdate !== undefined;
+        const comuna = esQuery
+          ? (this.getUpdate()?.comuna || this.getUpdate()?.$set?.comuna)
+          : this.comuna;
+
         if (!comuna || !BARRIOS_POR_COMUNA[comuna]) return true;
 
         const normalizar = (str) => str
@@ -43,7 +48,6 @@ const espacioSchema = new mongoose.Schema({
           .map(normalizar)
           .includes(normalizar(v));
       },
-      // Mensaje genérico (el específico se arma en el controlador)
       message: 'El barrio no corresponde a la comuna seleccionada.'
     }
   },
