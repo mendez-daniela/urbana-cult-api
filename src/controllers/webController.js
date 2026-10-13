@@ -1,10 +1,27 @@
 const Espacio = require('../models/Espacio.js');
 const BARRIOS_POR_COMUNA = require('../config/barrios.js');
 
-// Función auxiliar para armar el mensaje de error de barrio
-const armarMensajeBarrio = (comuna, barrio) => {
-  const barriosValidos = BARRIOS_POR_COMUNA[comuna]?.join(', ') || 'desconocidos';
-  return `El barrio "${barrio}" no corresponde a la Comuna ${comuna}. Los barrios válidos son: ${barriosValidos}`;
+// Función auxiliar: devuelve la comuna a la que pertenece un barrio
+const obtenerComuna = (barrio) => {
+  return Object.keys(BARRIOS_POR_COMUNA).find(comuna => BARRIOS_POR_COMUNA[comuna].includes(barrio));
+};
+
+// Función auxiliar: arma los datos del formulario con la comuna deducida del barrio
+const armarDatos = (body) => {
+  const datos = { ...body, comuna: obtenerComuna(body.barrio) };
+  delete datos._id;
+  return datos;
+};
+
+// Función auxiliar: arma el mensaje a mostrar a partir de un error de Mongoose
+const armarMensajeError = (error, mensajePorDefecto) => {
+  if (error.name === 'ValidationError') {
+    return Object.values(error.errors).map(e => e.message).join('. ');
+  }
+  if (error.code === 11000) {
+    return 'Ya existe un espacio con ese nombre';
+  }
+  return mensajePorDefecto;
 };
 
 // Listar todos los espacios
@@ -19,27 +36,20 @@ const listarEspacios = async (req, res, next) => {
 
 // Mostrar formulario de nuevo espacio
 const mostrarFormularioNuevo = (req, res) => {
-  res.render('nuevoEspacio', { error: null, datos: {} });
+  res.render('nuevoEspacio', { error: null, datos: {}, barriosPorComuna: BARRIOS_POR_COMUNA });
 };
 
 // Crear un nuevo espacio
 const crearEspacio = async (req, res, next) => {
+  const datos = armarDatos(req.body);
   try {
-    const nuevoEspacio = new Espacio(req.body);
+    const nuevoEspacio = new Espacio(datos);
     await nuevoEspacio.save();
     res.redirect('/espacios');
   } catch (error) {
-    let mensaje = 'Error al crear el espacio';
-
-    if (error.name === 'ValidationError') {
-      if (error.errors.barrio) {
-        mensaje = armarMensajeBarrio(req.body.comuna, req.body.barrio);
-      } else {
-        mensaje = Object.values(error.errors).map(e => e.message).join('. ');
-      }
-    }
-
-    res.render('nuevoEspacio', { error: mensaje, datos: req.body });
+    console.error('Error al crear el espacio:', error);
+    const mensaje = armarMensajeError(error, 'Error al crear el espacio');
+    res.render('nuevoEspacio', { error: mensaje, datos, barriosPorComuna: BARRIOS_POR_COMUNA });
   }
 };
 
@@ -50,7 +60,7 @@ const mostrarFormularioEditar = async (req, res, next) => {
     if (!espacio) {
       return res.status(404).send('Espacio no encontrado');
     }
-    res.render('editarEspacio', { espacio, error: null });
+    res.render('editarEspacio', { espacio, error: null, barriosPorComuna: BARRIOS_POR_COMUNA });
   } catch (error) {
     next(error);
   }
@@ -58,28 +68,20 @@ const mostrarFormularioEditar = async (req, res, next) => {
 
 // Actualizar un espacio
 const actualizarEspacio = async (req, res, next) => {
+  const datos = armarDatos(req.body);
   try {
-    const datos = { ...req.body };
-    delete datos._id;
     await Espacio.findByIdAndUpdate(req.params.id, datos, {
       new: true,
       runValidators: true
     });
     res.redirect('/espacios');
   } catch (error) {
-    let mensaje = 'Error al actualizar el espacio';
-
-    if (error.name === 'ValidationError') {
-      if (error.errors.barrio) {
-        mensaje = armarMensajeBarrio(req.body.comuna, req.body.barrio);
-      } else {
-        mensaje = Object.values(error.errors).map(e => e.message).join('. ');
-      }
-    }
-
+    console.error('Error al actualizar el espacio:', error);
+    const mensaje = armarMensajeError(error, 'Error al actualizar el espacio');
     res.render('editarEspacio', {
       error: mensaje,
-      espacio: { ...req.body, _id: req.params.id }
+      espacio: { ...datos, _id: req.params.id },
+      barriosPorComuna: BARRIOS_POR_COMUNA
     });
   }
 };

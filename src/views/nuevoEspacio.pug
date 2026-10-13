@@ -55,6 +55,9 @@ html
         border-radius: 4px;
         box-sizing: border-box;
       }
+      input[readonly] {
+        background-color: #eee;
+      }
       button {
         margin-top: 20px;
         padding: 10px 20px;
@@ -84,13 +87,15 @@ html
       input(type="text" name="direccion" maxlength="150" placeholder="Ej: Av. Corrientes 3200" value=(datos && datos.direccion) || '' required)
 
       label(for="barrio") Barrio:
-      input(type="text" name="barrio" maxlength="50" placeholder="Ej: Balvanera" value=(datos && datos.barrio) || '' required)
+      select#barrio(name="barrio" required)
+        option(value="") Seleccioná un barrio
+        each barrios, comuna in barriosPorComuna
+          optgroup(label=`Comuna ${comuna}`)
+            each b in barrios
+              option(value=b data-comuna=comuna selected=(datos && datos.barrio === b))= b
 
       label(for="comuna") Comuna:
-      select(name="comuna" required)
-        option(value="") Seleccioná una comuna
-        option(value="3" selected=(datos && datos.comuna == 3)) 3 - Balvanera / San Cristóbal
-        option(value="5" selected=(datos && datos.comuna == 5)) 5 - Almagro / Boedo
+      input#comuna(type="text" value=(datos && datos.comuna) || '' placeholder="Se completa al elegir el barrio" readonly)
 
       label(for="capacidad") Capacidad:
       input(type="number" name="capacidad" min="1" max="1000" value=(datos && datos.capacidad) || '' required)
@@ -102,3 +107,11 @@ html
       input(type="tel" name="telefono" maxlength="20" pattern="[0-9+\\-\\s]+" title="Solo números, guiones y el signo +" placeholder="Ej: 11-2345-6789" value=(datos && datos.telefono) || '')
 
       button(type="submit") Guardar Espacio
+
+    script.
+      // Completa la comuna según el barrio elegido (el servidor la vuelve a calcular al guardar)
+      const barrio = document.getElementById('barrio');
+      const comuna = document.getElementById('comuna');
+      barrio.addEventListener('change', () => {
+        comuna.value = barrio.selectedOptions[0].dataset.comuna || '';
+      });
