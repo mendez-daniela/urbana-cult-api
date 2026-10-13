@@ -109,7 +109,8 @@ api-json-crud/
 │   │   └── authController.js          # Controlador de login/registro/logout
 │   ├── middlewares/
 │   │   ├── logger.js                  # Middleware de registro de peticiones
-│   │   └── autenticado.js             # Middleware que protege rutas privadas
+│   │   ├── autenticado.js             # Middleware que protege rutas privadas
+│   │   └── errorHandler.js            # Middleware global de manejo de errores
 │   ├── models/
 │   │   ├── Espacio.js                 # Schema de Mongoose para espacios
 │   │   └── Usuario.js                 # Schema de Mongoose para usuarios
