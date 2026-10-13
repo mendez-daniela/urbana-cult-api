@@ -7,6 +7,7 @@ const espacioRoutes = require('./routes/espacioRoutes.js');
 const webRoutes = require('./routes/webRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
 const logger = require('./middlewares/logger.js');
+const autenticado = require('./middlewares/autenticado.js');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -36,7 +37,7 @@ app.use(session({
   }
 }));
 
-// Pasar datos del usuario a las vistas (para navbar, etc.)
+// Pasar datos del usuario a las vistas
 app.use((req, res, next) => {
   res.locals.usuario = req.session.usuarioEmail || null;
   next();
@@ -45,11 +46,14 @@ app.use((req, res, next) => {
 // Rutas
 app.use('/', authRoutes);
 app.use('/api/espacios', espacioRoutes);
-app.use('/', webRoutes);
+app.use('/espacios', autenticado, webRoutes);
 
 // Ruta raíz
 app.get('/', (req, res) => {
-  res.redirect('/espacios');
+  if (req.session && req.session.usuarioId) {
+    return res.redirect('/espacios');
+  }
+  res.redirect('/login');
 });
 
 app.listen(port, () => {
