@@ -8,13 +8,12 @@ const armarMensajeBarrio = (comuna, barrio) => {
 };
 
 // Listar todos los espacios
-const listarEspacios = async (req, res) => {
+const listarEspacios = async (req, res, next) => {
   try {
     const espacios = await Espacio.find();
     res.render('espacios', { espacios });
   } catch (error) {
-    console.error('Error al cargar los espacios:', error);
-    res.status(500).send('Error al cargar los espacios');
+    next(error);
   }
 };
 
@@ -24,14 +23,12 @@ const mostrarFormularioNuevo = (req, res) => {
 };
 
 // Crear un nuevo espacio
-const crearEspacio = async (req, res) => {
+const crearEspacio = async (req, res, next) => {
   try {
     const nuevoEspacio = new Espacio(req.body);
     await nuevoEspacio.save();
     res.redirect('/espacios');
   } catch (error) {
-    console.error('Error al crear el espacio:', error);
-
     let mensaje = 'Error al crear el espacio';
 
     if (error.name === 'ValidationError') {
@@ -47,7 +44,7 @@ const crearEspacio = async (req, res) => {
 };
 
 // Mostrar formulario de edición
-const mostrarFormularioEditar = async (req, res) => {
+const mostrarFormularioEditar = async (req, res, next) => {
   try {
     const espacio = await Espacio.findById(req.params.id);
     if (!espacio) {
@@ -55,13 +52,12 @@ const mostrarFormularioEditar = async (req, res) => {
     }
     res.render('editarEspacio', { espacio, error: null });
   } catch (error) {
-    console.error('Error al cargar el espacio:', error);
-    res.status(500).send('Error al cargar el espacio');
+    next(error);
   }
 };
 
 // Actualizar un espacio
-const actualizarEspacio = async (req, res) => {
+const actualizarEspacio = async (req, res, next) => {
   try {
     const datos = { ...req.body };
     delete datos._id;
@@ -71,8 +67,6 @@ const actualizarEspacio = async (req, res) => {
     });
     res.redirect('/espacios');
   } catch (error) {
-    console.error('Error al actualizar el espacio:', error);
-
     let mensaje = 'Error al actualizar el espacio';
 
     if (error.name === 'ValidationError') {
@@ -91,18 +85,17 @@ const actualizarEspacio = async (req, res) => {
 };
 
 // Eliminar un espacio
-const eliminarEspacio = async (req, res) => {
+const eliminarEspacio = async (req, res, next) => {
   try {
     await Espacio.findByIdAndDelete(req.params.id);
     res.redirect('/espacios');
   } catch (error) {
-    console.error('Error al eliminar el espacio:', error);
-    res.status(500).send('Error al eliminar el espacio');
+    next(error);
   }
 };
 
 // Ver detalle de un espacio
-const verDetalleEspacio = async (req, res) => {
+const verDetalleEspacio = async (req, res, next) => {
   try {
     const espacio = await Espacio.findById(req.params.id);
     if (!espacio) {
@@ -110,8 +103,7 @@ const verDetalleEspacio = async (req, res) => {
     }
     res.render('detalleEspacio', { espacio });
   } catch (error) {
-    console.error('Error al cargar el espacio:', error);
-    res.status(500).send('Error al cargar el espacio');
+    next(error);
   }
 };
 
