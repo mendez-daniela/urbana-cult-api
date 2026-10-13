@@ -1,82 +1,84 @@
-const EspacioModel = require('../models/EspacioModel');
-
-// Instanciamos y validamos
-const espacioModel = new EspacioModel();
+const Espacio = require('../models/Espacio.js');
 
 // Obtener todos
-const obtenerEspacios = (req, res) => {
+const obtenerEspacios = async (req, res) => {
   try {
-    const espacios = espacioModel.obtenerTodos();
-    res.json(espacios);
+    const espacios = await Espacio.find();
+    res.status(200).json(espacios);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al leer los datos' });
+    res.status(500).json({ mensaje: 'Error al obtener espacios', error: error.message });
   }
 };
 
 // Obtener por ID
-const obtenerEspacioPorId = (req, res) => {
+const obtenerEspacioPorId = async (req, res) => {
   try {
-    const espacio = espacioModel.obtenerPorId(parseInt(req.params.id));
+    const espacio = await Espacio.findById(req.params.id);
     if (!espacio) {
       return res.status(404).json({ mensaje: 'Espacio no encontrado' });
     }
-    res.json(espacio);
+    res.status(200).json(espacio);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al leer los datos' });
+    res.status(400).json({ mensaje: 'ID inválido', error: error.message });
   }
 };
 
 // Crear
-const crearEspacio = (req, res) => {
+const crearEspacio = async (req, res) => {
   try {
-    if (!req.body || Object.keys(req.body).length === 0) {
-      return res.status(400).json({ 
-        mensaje: 'El cuerpo de la solicitud no puede estar vacío' 
-      });
-    }
-    const nuevoEspacio = espacioModel.crear(req.body);
-    res.status(201).json(nuevoEspacio);
+    const nuevoEspacio = new Espacio(req.body);
+    const guardado = await nuevoEspacio.save();
+    res.status(201).json(guardado);
   } catch (error) {
-    if (error.message.includes('Faltan campos obligatorios') || 
-        error.message.includes('comuna') || 
-        error.message.includes('capacidad') || 
-        error.message.includes('dirección') ||
-        error.message.includes('direccion')) {
-      return res.status(400).json({ mensaje: error.message });
+    if (error.code === 11000) {
+      return res.status(400).json({ mensaje: 'Ya existe un espacio con ese nombre' });
     }
-    res.status(500).json({ mensaje: 'Error al guardar los datos' });
+    if (error.name === 'ValidationError') {
+      const mensajes = Object.values(error.errors).map(e => e.message);
+      return res.status(400).json({ mensaje: mensajes.join('. ') });
+    }
+    res.status(400).json({ mensaje: 'Error al crear el espacio', error: error.message });
   }
 };
 
 // Actualizar
-const actualizarEspacio = (req, res) => {
+const actualizarEspacio = async (req, res) => {
   try {
-    const espacioActualizado = espacioModel.actualizar(parseInt(req.params.id), req.body);
-    if (!espacioActualizado) {
+    const { id } = req.params;
+    const datos = { ...req.body };
+    delete datos._id;
+
+    const actualizado = await Espacio.findByIdAndUpdate(id, datos, {
+      new: true,
+      runValidators: true
+    });
+
+    if (!actualizado) {
       return res.status(404).json({ mensaje: 'Espacio no encontrado' });
     }
-    res.json(espacioActualizado);
+    res.status(200).json(actualizado);
   } catch (error) {
-    if (error.message.includes('comuna') || 
-        error.message.includes('capacidad') || 
-        error.message.includes('dirección') ||
-        error.message.includes('direccion')) {
-      return res.status(400).json({ mensaje: error.message });
+    if (error.code === 11000) {
+      return res.status(400).json({ mensaje: 'Ya existe un espacio con ese nombre' });
     }
-    res.status(500).json({ mensaje: 'Error al actualizar los datos' });
+    if (error.name === 'ValidationError') {
+      const mensajes = Object.values(error.errors).map(e => e.message);
+      return res.status(400).json({ mensaje: mensajes.join('. ') });
+    }
+    res.status(400).json({ mensaje: 'Error al actualizar el espacio', error: error.message });
   }
 };
 
 // Eliminar
-const eliminarEspacio = (req, res) => {
+const eliminarEspacio = async (req, res) => {
   try {
-    const eliminado = espacioModel.eliminar(parseInt(req.params.id));
+    const eliminado = await Espacio.findByIdAndDelete(req.params.id);
     if (!eliminado) {
       return res.status(404).json({ mensaje: 'Espacio no encontrado' });
     }
-    res.json({ mensaje: 'Espacio eliminado correctamente' });
+    res.status(200).json({ mensaje: 'Espacio eliminado correctamente' });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al eliminar los datos' });
+    res.status(400).json({ mensaje: 'ID inválido', error: error.message });
   }
 };
 

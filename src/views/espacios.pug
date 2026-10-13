@@ -72,15 +72,15 @@ html
         tbody
           each espacio in espacios
             tr
-              td= espacio.id
+              td= espacio._id
               td= espacio.nombre
               td= espacio.direccion
               td= espacio.barrio
               td= espacio.comuna
               td= espacio.capacidad
               td.acciones
-                a.ver(href=`/espacios/detalle/${espacio.id}`) Ver
-                a.editar(href=`/espacios/editar/${espacio.id}`) Editar
-                a.eliminar(href=`/espacios/eliminar/${espacio.id}` onclick="return confirm('¿Estás seguro de eliminar este espacio?')") Eliminar
+                a.ver(href=`/espacios/detalle/${espacio._id}`) Ver
+                a.editar(href=`/espacios/editar/${espacio._id}`) Editar
+                a.eliminar(href=`/espacios/eliminar/${espacio._id}` onclick="return confirm('¿Estás seguro de eliminar este espacio?')") Eliminar
     else
       p No hay espacios disponibles.
