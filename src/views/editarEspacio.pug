@@ -55,6 +55,9 @@ html
         border-radius: 4px;
         box-sizing: border-box;
       }
+      input[readonly] {
+        background-color: #eee;
+      }
       button {
         margin-top: 20px;
         padding: 10px 20px;
@@ -84,12 +87,15 @@ html
       input(type="text" name="direccion" maxlength="150" value=espacio.direccion required)
 
       label(for="barrio") Barrio:
-      input(type="text" name="barrio" maxlength="50" value=espacio.barrio required)
+      select#barrio(name="barrio" required)
+        option(value="") Seleccioná un barrio
+        each barrios, comuna in barriosPorComuna
+          optgroup(label=`Comuna ${comuna}`)
+            each b in barrios
+              option(value=b data-comuna=comuna selected=(espacio.barrio === b))= b
 
       label(for="comuna") Comuna:
-      select(name="comuna" required)
-        option(value="3" selected=(espacio.comuna === 3)) 3 - Balvanera / San Cristóbal
-        option(value="5" selected=(espacio.comuna === 5)) 5 - Almagro / Boedo
+      input#comuna(type="text" value=espacio.comuna placeholder="Se completa al elegir el barrio" readonly)
 
       label(for="capacidad") Capacidad:
       input(type="number" name="capacidad" min="1" max="1000" value=espacio.capacidad required)
@@ -101,3 +107,11 @@ html
       input(type="tel" name="telefono" maxlength="20" pattern="[0-9+\\-\\s]+" title="Solo números, guiones y el signo +" value=espacio.telefono)
 
       button(type="submit") Actualizar Espacio
+
+    script.
+      // Completa la comuna según el barrio elegido (el servidor la vuelve a calcular al guardar)
+      const barrio = document.getElementById('barrio');
+      const comuna = document.getElementById('comuna');
+      barrio.addEventListener('change', () => {
+        comuna.value = barrio.selectedOptions[0].dataset.comuna || '';
+      });
