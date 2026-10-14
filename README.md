@@ -97,7 +97,7 @@ Te va a redirigir a `/login` (si no estás logueado) o a `/espacios` (si ya lo e
 ## Estructura del proyecto
 
 ```
-api-json-crud/
+urbana-cult-api/
 ├── public/                            # Archivos estáticos (logos)
 ├── src/
 │   ├── config/
@@ -107,8 +107,12 @@ api-json-crud/
 │   │   ├── espacioController.js       # Controlador de la API REST
 │   │   ├── webController.js           # Controlador de las vistas web
 │   │   └── authController.js          # Controlador de login/registro/logout
+│   ├── docs/
+│   │   ├── 05-estructura.md
+│   │   ├── 08-middlewares.md
+│   │   └── 09-pug.md
 │   ├── middlewares/
-│   │   ├── logger.js                  # Middleware de registro de peticiones
+│   │   ├── logger.js                  # Middleware de logging
 │   │   ├── autenticado.js             # Middleware que protege rutas privadas
 │   │   └── errorHandler.js            # Middleware global de manejo de errores
 │   ├── models/
@@ -120,14 +124,15 @@ api-json-crud/
 │   │   └── authRoutes.js              # Rutas de autenticación
 │   ├── views/
 │   │   ├── espacios.pug               # Lista de espacios
+│   │   ├── detalleEspacio.pug         # Detalle de un espacio
 │   │   ├── nuevoEspacio.pug           # Formulario de creación
 │   │   ├── editarEspacio.pug          # Formulario de edición
-│   │   ├── detalleEspacio.pug         # Detalle de un espacio
 │   │   ├── login.pug                  # Formulario de login
 │   │   └── registro.pug               # Formulario de registro
 │   └── app.js                         # Punto de entrada del servidor
 ├── .env                               # Variables de entorno (no subido a Git)
 ├── .gitignore
+├── LICENSE
 ├── package.json
 ├── package-lock.json
 └── README.md
@@ -278,6 +283,7 @@ Durante el desarrollo del proyecto se utilizaron herramientas de inteligencia ar
 | Herramienta | Uso |
 | :--- | :--- |
 | **ChatGPT / Gemini / DeepSeek** | Consultas sobre sintaxis de Mongoose, resolución de dudas técnicas, generación de ejemplos de código y redacción de documentación. |
+| **Claude (Claude Code)** | Asistencia en la implementación del selector dinámico de barrios según comuna en las vistas Pug y ajustes menores de código. |
 
 ### Decisiones humanas
 

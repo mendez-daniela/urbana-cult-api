@@ -1,17 +1,17 @@
 const Espacio = require('../models/Espacio.js');
 
 // Obtener todos
-const obtenerEspacios = async (req, res) => {
+const obtenerEspacios = async (req, res, next) => {
   try {
     const espacios = await Espacio.find();
     res.status(200).json(espacios);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener espacios' });
+    next(error);
   }
 };
 
 // Obtener por ID
-const obtenerEspacioPorId = async (req, res) => {
+const obtenerEspacioPorId = async (req, res, next) => {
   try {
     const espacio = await Espacio.findById(req.params.id);
     if (!espacio) {
@@ -19,30 +19,23 @@ const obtenerEspacioPorId = async (req, res) => {
     }
     res.status(200).json(espacio);
   } catch (error) {
-    res.status(400).json({ mensaje: 'ID inválido' });
+    next(error);
   }
 };
 
 // Crear
-const crearEspacio = async (req, res) => {
+const crearEspacio = async (req, res, next) => {
   try {
     const nuevoEspacio = new Espacio(req.body);
     const guardado = await nuevoEspacio.save();
     res.status(201).json(guardado);
   } catch (error) {
-    if (error.code === 11000) {
-      return res.status(400).json({ mensaje: 'Ya existe un espacio con ese nombre' });
-    }
-    if (error.name === 'ValidationError') {
-      const mensajes = Object.values(error.errors).map(e => e.message);
-      return res.status(400).json({ mensaje: mensajes.join('. ') });
-    }
-    res.status(400).json({ mensaje: 'Error al crear el espacio' });
+    next(error);
   }
 };
 
 // Actualizar
-const actualizarEspacio = async (req, res) => {
+const actualizarEspacio = async (req, res, next) => {
   try {
     const { id } = req.params;
     const datos = { ...req.body };
@@ -58,19 +51,12 @@ const actualizarEspacio = async (req, res) => {
     }
     res.status(200).json(actualizado);
   } catch (error) {
-    if (error.code === 11000) {
-      return res.status(400).json({ mensaje: 'Ya existe un espacio con ese nombre' });
-    }
-    if (error.name === 'ValidationError') {
-      const mensajes = Object.values(error.errors).map(e => e.message);
-      return res.status(400).json({ mensaje: mensajes.join('. ') });
-    }
-    res.status(400).json({ mensaje: 'Error al actualizar el espacio' });
+    next(error);
   }
 };
 
 // Eliminar
-const eliminarEspacio = async (req, res) => {
+const eliminarEspacio = async (req, res, next) => {
   try {
     const eliminado = await Espacio.findByIdAndDelete(req.params.id);
     if (!eliminado) {
@@ -78,7 +64,7 @@ const eliminarEspacio = async (req, res) => {
     }
     res.status(200).json({ mensaje: 'Espacio eliminado correctamente' });
   } catch (error) {
-    res.status(400).json({ mensaje: 'ID inválido' });
+    next(error);
   }
 };
 
