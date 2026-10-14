@@ -1,0 +1,268 @@
+{
+  "info": {
+    "_postman_id": "92793053-cd3e-48fd-827e-be41f355cc9d",
+    "name": "Urbana Cult API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27269828"
+  },
+  "item": [
+    {
+      "name": "Crear espacio correcto",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Centro Cultural Abasto\",\n  \"direccion\": \"Av. Corrientes 3200\",\n  \"barrio\": \"Balvanera\",\n  \"comuna\": 3,\n  \"capacidad\": 300,\n  \"descripcion\": \"Espacio para eventos culturales\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/espacios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar espacios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", ""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ver detalle de espacio por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/6acf674c9ff93c2abce4bc2e",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", "6acf674c9ff93c2abce4bc2e"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar espacio",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": " {\"nombre\": \"Centro Cultural Actualizado\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/6acf674c9ff93c2abce4bc2e",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", "6acf674c9ff93c2abce4bc2e"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear espacio sin nombre",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"direccion\": \"Av. Corrientes 3200\",\n  \"barrio\": \"Balvanera\",\n  \"comuna\": 3,\n  \"capacidad\": 300,\n  \"descripcion\": \"Espacio para eventos culturales\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/espacios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear espacio con comuna inválida",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Centro Cultural Abasto\",\n  \"direccion\": \"Av. Corrientes 3200\",\n  \"barrio\": \"Balvanera\",\n  \"comuna\": 99,\n  \"capacidad\": 300,\n  \"descripcion\": \"Espacio para eventos culturales\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/espacios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Espacio con ID inexistente",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/123",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", "123"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar con ID inexistente",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/123",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", "123"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar con datos inválidos",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"capacidad\": -5}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/6acf674c9ff93c2abce4bc2e",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", "6acf674c9ff93c2abce4bc2e"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear espacio con body vacío",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/espacios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear espacio con tipo de dato erroneo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Centro Cultural Balvanera\",\n  \"direccion\": \"Av. Corrientes 900\",\n  \"barrio\": \"Balvanera\",\n  \"comuna\": 3,\n  \"capacidad\": \"mil\",\n  \"descripcion\": \"Espacio para eventos culturales\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/espacios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar espacio",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/6acf674c9ff93c2abce4bc2e",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", "6acf674c9ff93c2abce4bc2e"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Doble eliminación",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/espacios/6acf674c9ff93c2abce4bc2e",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "espacios", "6acf674c9ff93c2abce4bc2e"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
