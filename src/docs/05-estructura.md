@@ -6,51 +6,58 @@ El proyecto **Urbana Cult API** adopta una arquitectura basada en el patrón de 
 
 ```text
 urbana-cult-api/
-├── docs/                    # Documentación técnica del proyecto
-│   ├── 01-introduccion.md   # Introducción y objetivos del proyecto
-│   ├── 02-tecnologias.md     # Tecnologías y dependencias utilizadas
-│   ├── 03-instalacion.md    # Guía de instalación y entorno local
-│   ├── 04-base-de-datos.md  # Configuración de MongoDB y Mongoose
-│   ├── 05-estructura.md     # Estructura del proyecto y patrón MVC
-│   ├── 06-modelos.md        # Definición del modelo Espacio y validaciones
-│   ├── 07-rutas-api.md      # Documentación de endpoints de la API REST
-│   ├── 08-middlewares.md    # Middlewares (logger, static, parsers)
-│   ├── 09-pug.md            # Motor de vistas Pug e interfaz web
-│   └── 10-conclusiones.md   # Conclusiones del trabajo práctico
-├── public/                  # Recursos estáticos (imágenes, logos, CSS)
-│   └── logo-icono.png
+├── public/				# Archivos estáticos (logos)
 ├── src/
-│   ├── config/              # Configuración e inicialización de servicios
-│   │   └── db.js            # Conexión a MongoDB mediante Mongoose
-│   ├── controllers/         # Lógica de negocio y manejo de peticiones
-│   │   ├── espacioController.js  # Controlador de la API REST (JSON)
-│   │   └── webController.js      # Controlador de la interfaz Web (Pug)
-│   ├── middlewares/         # Middlewares personalizados
-│   │   └── logger.js        # Middleware de registro de solicitudes HTTP
-│   ├── models/              # Modelos y esquemas de datos
-│   │   └── Espacio.js       # Esquema Mongoose con validaciones del dominio
-│   ├── routes/              # Definición de rutas y endpoints
-│   │   ├── espacioRoutes.js # Rutas de la API REST (/api/espacios)
-│   │   └── webRoutes.js     # Rutas de navegación web (/)
-│   ├── views/               # Plantillas del motor de vistas Pug
-│   │   ├── detalleEspacio.pug
-│   │   ├── editarEspacio.pug
-│   │   ├── espacios.pug
-│   │   └── nuevoEspacio.pug
-│   └── app.js               # Punto de entrada principal de la aplicación
-├── .env                     # Variables de entorno (MONGO_URI, PORT)
-├── package.json             # Dependencias del proyecto y scripts
-└── README.md                # Documentación principal del repositorio
+│   ├── assets/
+│   │   └── capturas-interfaz/	# Capturas de de la interfaz de Pug
+│   ├── config/
+│   │   ├── db.js			# Conexión a MongoDB
+│   │   └── barrios.js		# Barrios válidos por comuna
+│   ├── controllers/
+│   │   ├── espacioController.js	# Controlador de la API REST
+│   │   ├── webController.js	# Controlador de las vistas web
+│   │   └── authController.js	# Controlador de login/registro/logout
+│   ├── docs/				# Documentación técnica del proyecto
+│   ├── middlewares/
+│   │   ├── logger.js			# Middleware de logging
+│   │   ├── autenticado.js		# Middleware que protege rutas privadas
+│   │   └── errorHandler.js		# Middleware global de manejo de errores
+│   ├── models/
+│   │   ├── Espacio.js		# Schema de Mongoose para espacios
+│   │   └── Usuario.js		# Schema de Mongoose para usuarios
+│   ├── routes/
+│   │   ├── espacioRoutes.js	# Rutas de la API REST
+│   │   ├── webRoutes.js		# Rutas de las vistas web
+│   │   └── authRoutes.js		# Rutas de autenticación
+│   ├── views/
+│   │   ├── espacios.pug		# Lista de espacios
+│   │   ├── detalleEspacio.pug	# Detalle de un espacio
+│   │   ├── nuevoEspacio.pug	# Formulario de creación
+│   │   ├── editarEspacio.pug	# Formulario de edición
+│   │   ├── login.pug			# Formulario de login
+│   │   └── registro.pug		# Formulario de registro
+│   └── app.js				# Punto de entrada del servidor
+├── tests/
+│   └── postman_collection.json	# Colección de pruebas de integración de Postman
+├── .env					# Variables de entorno (no subido a Git)
+├── .gitignore
+├── LICENSE
+├── package.json
+├── package-lock.json
+└── README.md
 ```
 
-## Descripción de cada capa:
+### Descripción de cada capa:
 
-- **docs/**: Almacena los módulos en formato Markdown que conforman la documentación técnica e informe del proyecto.
-- **public/**: Contiene los archivos estáticos, como los logos de Urbana Cult (`logo-icono.png`).
-- **src/config/**: Contiene el archivo `db.js`, encargado de establecer y gestionar la conexión asíncrona con la base de datos MongoDB mediante Mongoose.
-- **src/controllers/**: Actúa como intermediario recibiendo las solicitudes HTTP; opera con el modelo de Mongoose (`Espacio`) y retorna respuestas en formato JSON (`espacioController.js`) o renderiza vistas web (`webController.js`).
-- **src/middlewares/**: Contiene las funciones intermediarias del servidor, como `logger.js`, encargadas de interceptar, auditar y registrar las peticiones HTTP antes de que lleguen a los controladores.
-- **src/models/**: Contiene el esquema de Mongoose (`Espacio.js`), que define la estructura de los documentos en MongoDB, centralizando las reglas de validación y la lógica de persistencia.
-- **src/routes/**: Define las rutas de la API REST (`/api/espacios`) y las rutas de navegación web (`/espacios`), direccionando las peticiones a sus respectivos controladores.
-- **src/views/**: Almacena las plantillas Pug (`espacios.pug`, `nuevoEspacio.pug`, `editarEspacio.pug`, `detalleEspacio.pug`) que conforman la interfaz web dinámica del CRUD.
-- **src/app.js**: Es el punto de entrada principal del servidor, donde se inicializa la aplicación Express, se establece la conexión a MongoDB, se configuran los middlewares globales, se define Pug como motor de plantillas y se registran las rutas base.
+- **`docs/`**: Almacena los módulos en formato Markdown que conforman la documentación técnica e informe del proyecto.
+- **`public/`**: Contiene los archivos estáticos, como los logos y recursos multimedia de Urbana Cult.
+- **`src/assets/`**: Contiene los recursos gráficos y capturas de pantalla de la interfaz visual utilizadas para documentar el funcionamiento de las vistas Pug.
+- **`src/config/`**: Contiene el archivo `db.js`, encargado de establecer y gestionar la conexión asíncrona con la base de datos MongoDB mediante Mongoose, y `barrios.js` con la configuración de comunas y barrios permitidos.
+- **`src/controllers/`**: Actúa como intermediario recibiendo las solicitudes HTTP; opera con los modelos de Mongoose (`Espacio` y `Usuario`) y retorna respuestas en formato JSON (`espacioController.js`) o renderiza vistas web (`webController.js` y `authController.js`).
+- **`src/middlewares/`**: Contiene las funciones intermediarias del servidor (`logger.js`, `autenticado.js`, `errorHandler.js`), encargadas de interceptar, auditar, proteger rutas y manejar errores globalmente antes o después de llegar a los controladores.
+- **`src/models/`**: Contiene los esquemas de Mongoose (`Espacio.js` y `Usuario.js`), que definen la estructura de los documentos en MongoDB, centralizando las reglas de validación y la lógica de persistencia.
+- **`src/routes/`**: Define las rutas de la API REST (`/api/espacios`), las rutas de navegación web (`/espacios`) y de autenticación (`/login`, `/registro`, `/logout`), direccionando las peticiones a sus respectivos controladores.
+- **`src/views/`**: Almacena las plantillas Pug (`espacios.pug`, `nuevoEspacio.pug`, `editarEspacio.pug`, `detalleEspacio.pug`, `login.pug`, `registro.pug`) que conforman la interfaz web dinámica del CRUD y la autenticación.
+- **`src/app.js`**: Es el punto de entrada principal del servidor, donde se inicializa la aplicación Express, se establece la conexión a MongoDB, se configuran los middlewares globales, se define Pug como motor de plantillas y se registran las rutas base.
+- **`tests/`**: Almacena la suite de pruebas de integración exportada de Postman (`postman_collection.json`) para verificar los endpoints de la API REST.
+- **`.env`**: Archivo de configuración local para gestionar variables de entorno sensibles (como la URI de conexión a MongoDB y la clave secreta de sesiones) sin exponerlas en el control de versiones.
