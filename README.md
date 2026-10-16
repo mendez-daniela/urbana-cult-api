@@ -29,11 +29,13 @@ Desarrollada con Node.js, Express, MongoDB, Mongoose y Pug, siguiendo el patrón
 
 - **Node.js** (versión 18 o superior)
 - **npm** (incluido con Node.js)
-- **MongoDB** (instalado y corriendo como servicio local)
+- **MongoDB**, en cualquiera de estas dos modalidades:
+  - **Local:** instalado y corriendo como servicio en tu PC.
+  - **Atlas:** cuenta gratuita en [MongoDB Atlas](https://www.mongodb.com/atlas) con un clúster activo.
 
-### Instalación de MongoDB
+### Instalación de MongoDB (opcional)
 
-Si no tenés MongoDB instalado, descargalo desde:
+Si vas a usar **MongoDB local**, descargalo desde:
 https://www.mongodb.com/try/download/community
 
 Una vez instalado, verificá que el servicio esté corriendo:
@@ -43,6 +45,8 @@ sc query MongoDB
 ```
 
 Debería mostrar `STATE : 4 RUNNING`.
+
+**Alternativa:** si no podés instalar MongoDB localmente, podés usar **MongoDB Atlas** (base de datos en la nube). Solo tenés que crear una cuenta gratuita, armar un clúster y obtener la URI de conexión (`mongodb+srv://...`) para ponerla en el `.env`.
 
 ### Clonar el repositorio
 
@@ -62,9 +66,23 @@ npm install
 En la raíz del proyecto, crear un archivo `.env` con el siguiente contenido:
 
 ```
-MONGO_URI=mongodb://localhost:27017/urbana-cult
+MONGO_URI=<tu_uri_de_conexion>
 PORT=4000
 SESSION_SECRET=urbana-cult-secret-key-2026
+```
+
+La variable `MONGO_URI` acepta dos configuraciones según el entorno:
+
+**Opción 1 – MongoDB local** (si tenés MongoDB instalado en tu PC):
+
+```
+MONGO_URI=mongodb://localhost:27017/urbana-cult
+```
+
+**Opción 2 – MongoDB Atlas** (base de datos en la nube, recomendado si no podés instalar MongoDB localmente):
+
+```
+MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/urbana-cult
 ```
 
 **Nota:** el archivo `.env` está en `.gitignore`, por lo que no se sube al repositorio.
