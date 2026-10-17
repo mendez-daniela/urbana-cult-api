@@ -116,6 +116,8 @@ Te va a redirigir a `/login` (si no estás logueado) o a `/espacios` (si ya lo e
 
 ## Estructura del proyecto
 
+## Estructura del proyecto
+
 ```
 urbana-cult-api/
 ├── public/                            # Archivos estáticos (logos)
@@ -151,9 +153,9 @@ urbana-cult-api/
 │   │   ├── editarEspacio.pug          # Formulario de edición
 │   │   ├── login.pug                  # Formulario de login
 │   │   └── registro.pug               # Formulario de registro
-│   ├── app.js                         # Punto de entrada del servidor
-│   └── tests/
-│       └── postman_collection.json    # Colección de Postman con pruebas de la API
+│   └── app.js                         # Punto de entrada del servidor
+├── tests/                             # Carpeta de pruebas
+│   └── postman_collection.json        # Colección de Postman con pruebas de la API
 ├── .env                               # Variables de entorno (no subido a Git)
 ├── .gitignore
 ├── LICENSE
