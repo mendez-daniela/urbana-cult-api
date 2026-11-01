@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const cors = require('cors'); // ¡NUEVO!
+const compression = require('compression'); // ¡NUEVO!
 const conectarDB = require('./config/db');
 const espacioRoutes = require('./routes/espacioRoutes.js');
 const webRoutes = require('./routes/webRoutes.js');
@@ -24,17 +26,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Middlewares
+app.use(cors()); // Permite peticiones externas (útil para Postman en la nube)
+app.use(compression()); // Comprime las respuestas JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 
-// Configurar sesión
+// Configurar sesión para producción
 app.use(session({
   secret: process.env.SESSION_SECRET || 'urbana-cult-secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000 // 24 horas
+    maxAge: 24 * 60 * 60 * 1000, // 24 horas
+    httpOnly: true, // Seguridad: evita acceso desde JS del cliente
+    secure: process.env.NODE_ENV === 'production', // true si está en Render
+    sameSite: 'lax'
   }
 }));
 
@@ -58,8 +65,8 @@ app.get('/', (req, res) => {
 });
 
 // Middleware de manejo de errores (siempre al final)
-app.use(errorHandler); 
+app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+  console.log(`Servidor corriendo en el puerto ${port}`);
 });
