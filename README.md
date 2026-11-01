@@ -147,17 +147,17 @@ urbana-cult-api/
 
 ## Endpoints de la API
 
-### API REST (pública)
+### API REST (Endpoints de Espacio)
 
 | Método | Endpoint | Descripción | Código exitoso |
 | :--- | :--- | :--- | :--- |
-| **GET** | `/api/espacios` | Obtiene todos los espacios (con paginación). | 200 OK |
+| **GET** | `/api/espacios` | Obtiene todos los espacios (paginación opcional con `?pagina=1&limite=10`). | 200 OK |
 | **GET** | `/api/espacios/:id` | Obtiene un espacio por su ObjectID. | 200 OK / 404 |
 | **POST** | `/api/espacios` | Crea un nuevo espacio. | 201 Created / 400 |
 | **PUT** | `/api/espacios/:id` | Actualiza un espacio existente. | 200 OK / 400 / 404 |
 | **DELETE** | `/api/espacios/:id` | Elimina un espacio por su ObjectID. | 200 OK / 404 |
 
-### Autenticación (pública)
+### Autenticación (Endpoints de Usuario)
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
@@ -245,26 +245,26 @@ El sistema verifica que el barrio ingresado corresponda a la comuna seleccionada
 
 | Integrante | Rol | Responsabilidades |
 | :--- | :--- | :--- |
-| **Méndez, Daniela Ester** | Líder Técnico / Backend | Migración a MongoDB con Mongoose, definición del Schema, controladores con async/await, sistema de autenticación, conexión a la base de datos, despliegue en Vercel, coordinación y documentación técnica. |
-| **Prinzen, Sol Agustina** | Documentación / Testing de Interfaz | Redacción de secciones técnicas (estructura, middlewares, Pug), pruebas de interfaz web y diseño del video. |
-| **Sosa, Lucas Eliel** | Testing / Documentación | Pruebas de integración con Postman, documentación de bugs, bibliografía, declaración de IA y edición del video. |
+| **Méndez, Daniela Ester** | Líder Técnico / Backend | Configuración de MongoDB Atlas, despliegue en Vercel, actualización del README, Diagrama de Clases, redacción de las secciones de Arquitectura y Despliegue, unificación del PDF final y coordinación de la entrega. |
+| **Prinzen, Sol Agustina** | Documentación / Testing de Interfaz | Armado del Diagrama de Casos de Uso, redacción del texto que explica los diagramas nuevos, Testing de Interfaz, diseño de portada y formato del PDF, y explicación de la interfaz web en el video. |
+| **Sosa, Lucas Eliel** | Testing / Documentación | Pruebas de integración con Postman (API en Vercel), redacción de la sección de Pruebas y Resultados, Conclusión Final, edición y publicación del video. |
 
 ---
 
 ## Estado del proyecto
 
-### Parte 1 (completada)
+### Primera Entrega
 - CRUD completo con persistencia en archivo JSON.
 - Interfaz web con Pug.
 - Middleware de logging.
 
-### Parte 2 (Segunda Entrega)
+### Segunda Entrega
 - ✅ Migración a MongoDB con Mongoose.
 - ✅ Schema de Espacio con validaciones.
 - ✅ Schema de Usuario con hash de contraseña.
 - ✅ Sistema de autenticación completo.
 
-### Parte 3 (Entrega Final)
+### Tercera Entrega (Final)
 - ✅ **Despliegue en la nube:** Vercel + MongoDB Atlas.
 - ✅ **Sesiones persistidas:** `connect-mongo` para producción.
 - ✅ **Paginación** en la API REST.
@@ -282,7 +282,7 @@ Durante el desarrollo del proyecto se utilizaron herramientas de inteligencia ar
 
 | Herramienta | Uso |
 | :--- | :--- |
-| **ChatGPT / Gemini / DeepSeek** | Consultas sobre sintaxis de Mongoose, resolución de dudas técnicas, generación de ejemplos de código y redacción de documentación. |
+| **ChatGPT / Gemini / DeepSeek** | Consultas sobre sintaxis de Mongoose, resolución de dudas técnicas, configuración de despliegue en Vercel/Atlas y redacción de documentación. |
 | **Claude (Claude Code)** | Asistencia en la implementación del selector dinámico de barrios según comuna en las vistas Pug y ajustes menores de código. |
 
 ### Declaración
@@ -295,6 +295,7 @@ El equipo asume la **responsabilidad total** sobre el contenido del proyecto. La
 - **Node.js:** https://nodejs.org
 - **Express.js:** https://expressjs.com
 - **MongoDB:** https://www.mongodb.com
+- **MongoDB Atlas:** https://www.mongodb.com/docs/atlas/
 - **Mongoose:** https://mongoosejs.com
 - **Pug:** https://pugjs.org
 - **bcryptjs:** https://www.npmjs.com/package/bcryptjs
@@ -313,6 +314,7 @@ El equipo asume la **responsabilidad total** sobre el contenido del proyecto. La
 - Módulo de **reserva de salas de ensayo**.
 - **Dashboard** de métricas para los representantes de los espacios.
 - Sistema de **roles** (admin / usuario común).
+- **Autenticación por JWT** para la API REST (actualmente pública para facilitar las pruebas con Postman).
 - Recuperación de contraseña por email.
 
 ---
