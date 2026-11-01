@@ -40,6 +40,7 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ 
     mongoUrl: process.env.MONGO_URI,
+    dbName: 'urbana-cult', // Forzamos el nombre de la base
     ttl: 24 * 60 * 60 
   }),
   cookie: {
