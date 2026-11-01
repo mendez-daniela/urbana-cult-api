@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo').default || require('connect-mongo');
 const cors = require('cors'); 
 const compression = require('compression'); 
 const conectarDB = require('./config/db');
@@ -40,7 +40,7 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ 
     mongoUrl: process.env.MONGO_URI,
-    ttl: 24 * 60 * 60 // 24 horas
+    ttl: 24 * 60 * 60 
   }),
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
