@@ -33,21 +33,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 
+// Necesario para que las cookies funcionen en Vercel (HTTPS)
+app.set('trust proxy', 1);
+
 // Configurar sesión para producción (Vercel usa HTTPS)
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'urbana-cult-secret-key',
+  secret: process.env.SESSION_SECRET || 'urbana-cult-secret-key-2026',
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ 
-    mongoUrl: process.env.MONGO_URI,
-    dbName: 'urbana-cult', // Forzamos el nombre de la base
+    mongoUrl: process.env.MONGO_URI || "mongodb+srv://novalynany_db_user:F1qN2QcvatuUqjO7@cluster0.n7laymu.mongodb.net/urbana-cult?retryWrites=true&w=majority&serverSelectionTimeoutMS=5000&family=4",
+    dbName: 'urbana-cult',
     ttl: 24 * 60 * 60 
   }),
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax'
+    secure: true,          // Obligatorio en Vercel (HTTPS)
+    sameSite: 'none'       // Permite la cookie en dominios cruzados
   }
 }));
 
@@ -81,4 +84,4 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Exportamos la app para que Vercel la use como Serverless Function
-module.exports = app; 
+module.exports = app;
