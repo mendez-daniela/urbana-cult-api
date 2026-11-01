@@ -140,6 +140,7 @@ urbana-cult-api/
 ├── LICENSE
 ├── package.json
 ├── package-lock.json
+├── vercel.json                        # Configuración de despliegue en Vercel
 └── README.md
 ```
 
