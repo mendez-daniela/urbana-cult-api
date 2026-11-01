@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const cors = require('cors'); 
 const compression = require('compression'); 
 const conectarDB = require('./config/db');
@@ -37,10 +38,14 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'urbana-cult-secret-key',
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({ 
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 24 * 60 * 60 // 24 horas
+  }),
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000, // 24 horas
-    httpOnly: true, 
-    secure: process.env.NODE_ENV === 'production', 
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax'
   }
 }));
