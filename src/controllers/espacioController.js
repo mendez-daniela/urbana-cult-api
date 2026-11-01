@@ -1,10 +1,25 @@
 const Espacio = require('../models/Espacio.js');
 
-// Obtener todos
+// Obtener todos (con paginación)
 const obtenerEspacios = async (req, res, next) => {
   try {
-    const espacios = await Espacio.find();
-    res.status(200).json(espacios);
+    // Paginación: por defecto página 1, 10 resultados por página
+    const pagina = parseInt(req.query.pagina) || 1;
+    const limite = parseInt(req.query.limite) || 10;
+    const saltar = (pagina - 1) * limite;
+
+    // Ejecutamos la consulta con skip y limit
+    const espacios = await Espacio.find().skip(saltar).limit(limite);
+    
+    // Contamos el total para saber cuántas páginas hay
+    const total = await Espacio.countDocuments();
+
+    res.status(200).json({
+      total,
+      pagina,
+      limite,
+      datos: espacios
+    });
   } catch (error) {
     next(error);
   }
@@ -41,8 +56,9 @@ const actualizarEspacio = async (req, res, next) => {
     const datos = { ...req.body };
     delete datos._id;
 
+    // Se reemplaza 'new: true' por 'returnDocument: after' para quitar el warning de Mongoose
     const actualizado = await Espacio.findByIdAndUpdate(id, datos, {
-      new: true,
+      returnDocument: 'after', 
       runValidators: true
     });
 

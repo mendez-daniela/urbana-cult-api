@@ -71,7 +71,7 @@ const actualizarEspacio = async (req, res, next) => {
   const datos = armarDatos(req.body);
   try {
     await Espacio.findByIdAndUpdate(req.params.id, datos, {
-      new: true,
+      returnDocument: 'after', // Reemplaza a 'new: true' para evitar el warning de Mongoose
       runValidators: true
     });
     res.redirect('/espacios');
