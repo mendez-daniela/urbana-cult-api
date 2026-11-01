@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const cors = require('cors'); // ¡NUEVO!
-const compression = require('compression'); // ¡NUEVO!
+const cors = require('cors'); 
+const compression = require('compression'); 
 const conectarDB = require('./config/db');
 const espacioRoutes = require('./routes/espacioRoutes.js');
 const webRoutes = require('./routes/webRoutes.js');
@@ -26,21 +26,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Middlewares
-app.use(cors()); // Permite peticiones externas (útil para Postman en la nube)
-app.use(compression()); // Comprime las respuestas JSON
+app.use(cors()); 
+app.use(compression()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 
-// Configurar sesión para producción
+// Configurar sesión para producción (Vercel usa HTTPS)
 app.use(session({
   secret: process.env.SESSION_SECRET || 'urbana-cult-secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 24 * 60 * 60 * 1000, // 24 horas
-    httpOnly: true, // Seguridad: evita acceso desde JS del cliente
-    secure: process.env.NODE_ENV === 'production', // true si está en Render
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === 'production', 
     sameSite: 'lax'
   }
 }));
@@ -67,6 +67,12 @@ app.get('/', (req, res) => {
 // Middleware de manejo de errores (siempre al final)
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
-});
+// --- ADAPTACIÓN PARA VERCEL ---
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Servidor corriendo en el puerto ${port}`);
+  });
+}
+
+// Exportamos la app para que Vercel la use como Serverless Function
+module.exports = app; 
