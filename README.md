@@ -102,7 +102,8 @@ urbana-cult-api/
 ├── public/                            # Archivos estáticos (logos)
 ├── src/
 │   ├── assets/
-│   │   └── capturas-interfaz/         # Capturas de pantalla de la interfaz
+│   │   ├── capturas-interfaz/         # Capturas de pantalla de la interfaz
+│   │   └── capturas-postman/          # Capturas de pruebas de API (Postman)
 │   ├── config/
 │   │   ├── db.js                      # Conexión a MongoDB
 │   │   └── barrios.js                 # Barrios válidos por comuna
@@ -272,7 +273,7 @@ El sistema verifica que el barrio ingresado corresponda a la comuna seleccionada
 - ✅ **Índices en MongoDB** para mejorar el rendimiento.
 - ✅ **Seguridad:** cookies `httpOnly` y `secure` para producción.
 - ✅ **CORS y Compresión** configurados.
-- ✅ **Manejo de errores centralizado** (sin exponer detalles en producción).
+- ✅ **Manejo de errores centralizado** (traducción de errores técnicos a lenguaje natural en producción).
 - ✅ **Documentación completa** (README, diagramas, PDF).
 
 ---
