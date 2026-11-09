@@ -103,7 +103,9 @@ urbana-cult-api/
 ├── src/
 │   ├── assets/
 │   │   ├── capturas-interfaz/         # Capturas de pantalla de la interfaz
-│   │   └── capturas-postman/          # Capturas de pruebas de API (Postman)
+│   │   ├── capturas-postman/          # Capturas de pruebas de API (Postman)
+│   │   └── capturas-documentacion/    # Captura del tablero de Trello
+│   │
 │   ├── config/
 │   │   ├── db.js                      # Conexión a MongoDB
 │   │   └── barrios.js                 # Barrios válidos por comuna
